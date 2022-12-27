@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components{
+    nav {
+        @apply px-3 py-3 md:gap-3 flex items-center flex-row-reverse justify-end md:py-3 lg:px-12 lg:flex-row lg:justify-between lg:gap-0 lg:mx-auto lg:py-3
+    }
+    .wrapNavbar{
+        @apply fixed z-10 w-full  border-slate-100/[.10] transition-all duration-300
+    }
+    .menuMobile {
+        @apply fixed pl-2 top-0 min-w-[70vw] min-h-screen bg-slate-800 flex flex-col gap-5 md:pl-3 lg:static lg:min-h-full lg:flex-row lg:w-[100%] lg:justify-between lg:bg-transparent transition-all duration-300 
+    }
+    .btn {
+        @apply text-base md:text-xl px-4 py-2 lg:px-3 rounded-md text-white hover:bg-red-900 transition duration-300
+    }
+    .bannerMobile {
+        @apply absolute w-full bg-red-900 z-50 bottom-0 transition-all duration-300 overflow-scroll
+    }
+    .buttonTrending {
+        @apply text-sm md:text-base px-3 md:px-6 md:py-2 rounded-full text-white transition-all duration-300
+    }
+    .buttonGenre {
+        @apply w-32 py-2 rounded-full text-white transition-all duration-300 bg-[#131A2A]
+    }
+    .buttonMovie {
+        @apply absolute h-full w-full border items-center justify-center
+    }
+}
