@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
-import { FaFacebook,FaInstagram,FaGithub,FaLinkedin } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { SiGmail } from 'react-icons/si';
 import Navigation from './components/Navbar/Navigation';
 import Login from './components/Modal/Login'
 import Sign from './components/Modal/Sign'
 import SettingUser from './components/Modal/SettingUser'
-import SwiperHeader from './components/HeaderSection/Swiper'
-import MovieTrending from './components/MovieTrending/MovieTrending'
+import Hero from './components/HeaderSection/Hero'
+import MovieList from './components/MovieTrending/MovieList'
 import MobileMovieDetail from './components/MovieTrending/MobileDetail'
+import Footer from './components/Footer/Footer'
 import { MovieDetail, moviePopuler,PopulerMovie, TrendingMovie} from './api';
-
-// USER LOGIN BELUM AKURAT
 
 function App() {
   const [login, setLogin] = useState(false);
@@ -91,27 +88,18 @@ function App() {
         {showSearchMovie ? 
         <div className='absolute w-full top-20'>
           {errorHandle ? 
-            <MovieTrending listMovie={listSearchMovie} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile}/> 
+            <MovieList listMovie={listSearchMovie} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile}/> 
           : 
             <h1 className='text-center text-white text-3xl'>{messageError}!</h1>
           }
         </div>
         :
         <>
-        <SwiperHeader movie={heroMovie} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile}/>
-        <MovieTrending menu={setTranding} listMovie={trandingMovie} title={'TRANDING'} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile} id={'Tranding'} />
-        <MovieTrending listMovie={populerMovie} title={'ALL MOVIE'} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile} id={'All_Movie'}/>
+        <Hero movie={heroMovie} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile}/>
+        <MovieList menu={setTranding} listMovie={trandingMovie} title={'TRANDING'} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile} id={'Tranding'} />
+        <MovieList listMovie={populerMovie} title={'ALL MOVIE'} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile} id={'All_Movie'}/>
         
-        <footer className='text-white flex flex-col justify-center items-center border-t border-slate-100/[.15] py-5 gap-3'>
-          <div className='flex gap-4 text-lg md:text-2xl'>
-            <a href="#" className='hover:text-slate-500 transition-all duration-300'><FaInstagram /></a>
-            <a href="#" className='hover:text-slate-500 transition-all duration-300'><FaFacebook /></a>
-            <a href="#" className='hover:text-slate-500 transition-all duration-300'><FaGithub /></a>
-            <a href="#" className='hover:text-slate-500 transition-all duration-300'><SiGmail /></a>
-            <a href="#" className='hover:text-slate-500 transition-all duration-300'><FaLinkedin /></a>
-          </div>
-            <p className='text-md md:text-lg'>2022 &copy; ImronMan</p>
-        </footer>
+        <Footer />
         </>
         }
       </>
