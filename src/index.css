@@ -19,7 +19,7 @@
         @apply absolute w-full bg-red-900 z-50 bottom-0 transition-all duration-300 overflow-scroll
     }
     .buttonTrending {
-        @apply text-sm md:text-base px-3 md:px-6 md:py-2 rounded-full text-white transition-all duration-300
+        @apply text-sm md:text-base px-3 py-1 md:px-6 md:py-2 rounded-full text-white transition-all duration-300
     }
     .buttonGenre {
         @apply w-32 py-2 rounded-full text-white transition-all duration-300 bg-[#131A2A]

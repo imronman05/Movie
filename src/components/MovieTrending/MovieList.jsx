@@ -8,6 +8,7 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { Navigation, Virtual,FreeMode} from "swiper";
 import DetailMovie from './MovieDetail';
+import LoadingDetail from './LoadingDetail';
 
 const MovieTrending = (props) => {
   const [buttonTrending1] = useState('buttonTrending bg-[#E50914]');
@@ -15,6 +16,7 @@ const MovieTrending = (props) => {
   const [showMovieDetail, setShowMovieDetail] = useState(false);
   const [movieDetail, setMovieDetail] = useState([])
   const [imageActor, setImageActor] = useState([])
+  const [loadingDetail, setLoadingDetail] = useState(false)
 
   const button1 = () =>{
     props.menu('day')
@@ -53,12 +55,16 @@ const MovieTrending = (props) => {
       props.mobileShow(true)
       props.idMobile(event.target.dataset.id)
     }else{
-    MovieDetail(event.target.dataset.id).then(result =>{
-      setMovieDetail(result)
-    })
-    ImageActor(event.target.dataset.id).then(actor =>{
+      setLoadingDetail(true)
+      setTimeout(() =>{
+      MovieDetail(event.target.dataset.id).then(result =>{
+        setMovieDetail(result)
+      })
+      ImageActor(event.target.dataset.id).then(actor =>{
           setImageActor(actor)
-        })
+      })
+      setLoadingDetail(false)
+    },2000)
       setShowMovieDetail(true)
     }
   }
@@ -68,9 +74,9 @@ const MovieTrending = (props) => {
       <div>
       {props.title && 
         <div className='flex mt-5 md:mt-10 md:pb-3 border-b border-white/[.40] mb-3 lg:mb-5 md:mb-0'>
-          <h1 className='font-Source font-semibold leading-relaxed text-lg md:text-4xl text-white md:pl-3'>{props.title}</h1>  
+          <h1 className='font-semibold leading-relaxed text-lg md:text-4xl text-white md:pl-3'>{props.title}</h1>  
           {props.menu && 
-              <div className='mx-10 lg:mx-80 md:mx-20 flex md:items-center border border-[#E50914] rounded-full'>
+              <div className='mx-10 lg:mx-80 md:mx-20 flex md:items-center border border-[#E50914] rounded-full mb-2 md:mb-0'>
                 <button className={buttonTrending1} onClick={button1} value={'Day'} >Day</button>
                 <button className={buttonTrending2} onClick={button2} value={'Week'} >Week</button>
               </div>
@@ -83,7 +89,7 @@ const MovieTrending = (props) => {
         freeMode={true}
         navigation={true}
         modules={[Virtual,Navigation,FreeMode]}
-        className="mySwiper lg:px-3"
+        className="mySwiper lg:px-3 mb-4"
         breakpoints={{
           768: {
             slidesPerView: 4
@@ -106,7 +112,11 @@ const MovieTrending = (props) => {
         </Swiper>
         {showMovieDetail && 
         <div className='hidden md:block h-[35rem] w-full mt-12 lg:px-3 md:px-0 md:-mb-32 lg:mb-0'>
-          <DetailMovie showMovieDetail={setShowMovieDetail} movieDetail={movieDetail} imageActor={imageActor} closeMovieDetail={setShowMovieDetail}/>
+          {loadingDetail ? 
+          <LoadingDetail closeMovieDetail={setShowMovieDetail} />
+          :
+          <DetailMovie showMovieDetail={setShowMovieDetail} movieDetail={movieDetail} imageActor={imageActor} closeMovieDetail=         {setShowMovieDetail}/> 
+          }
         </div>}
       </div>
     </div>

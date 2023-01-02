@@ -28,7 +28,6 @@ const Navigation = (props) => {
             try{
                 const movieSearch = await SearchMovie(searchMovie)
                 if(movieSearch.data.results.length != 0 && searchMovie != 'asd'){
-                    console.log(movieSearch.data.results)
                     props.movieSearch(movieSearch.data.results)
                     props.showSearchMovie(true)
                     props.error(true)
@@ -42,7 +41,7 @@ const Navigation = (props) => {
                 if (err.response) {
                     props.errorMesangge(err.response.data.status_message)
                     props.error(false)
-                }else if (err.request) {
+                }else if(err.request) {
                     props.errorMesangge(err.message)
                 }else{
                 console.log('Error', err.message);
@@ -80,7 +79,7 @@ const Navigation = (props) => {
                 </div>
                 <ul className="flex flex-col gap-5 text-slate-400 lg:justify-evenly lg:w-[80%] lg:flex-row lg:items-center lg:text-lg font-Source">
                     <li className='text-xl'>
-                        <LinkScroll to='Tranding' smooth={true} offset={-100} duration={500} className="cursor-pointer hover:text-white transition-all duration-300">Tranding</LinkScroll>
+                        <LinkScroll to='Tranding' smooth={true} offset={-100} duration={500} className="cursor-pointer hover:text-white transition-all duration-300">Trending</LinkScroll>
                     </li>
                     <li className='text-xl'>
                     <LinkScroll to='All_Movie' smooth={true} offset={-100} duration={500} className="cursor-pointer hover:text-white transition-all duration-300">All Movie</LinkScroll>

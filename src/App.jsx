@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import Navigation from './components/Navbar/Navigation';
+import LoadingNav from './components/Navbar/LoadingNav'
 import Login from './components/Modal/Login'
 import Sign from './components/Modal/Sign'
 import SettingUser from './components/Modal/SettingUser'
 import Hero from './components/HeaderSection/Hero'
+import LoadingHero from './components/HeaderSection/Loading'
 import MovieList from './components/MovieTrending/MovieList'
+import LoadingMovieList from './components/MovieTrending/TrendingLoading'
 import MobileMovieDetail from './components/MovieTrending/MobileDetail'
+import MobileLoadDetail from './components/MovieTrending/LoadingMobileDetail'
 import Footer from './components/Footer/Footer'
 import { MovieDetail, moviePopuler,PopulerMovie, TrendingMovie} from './api';
 
@@ -29,8 +33,11 @@ function App() {
   const [messageError,setMessageError] = useState('')
   const data = JSON.parse(localStorage.getItem('user'))
   const [loading,setLoading] = useState(false)
+  const [loadingPage,setLoadingPage] = useState(true)
+  const [loadingMobile, setLoadingMobile] = useState(false)
 
   useEffect(() =>{
+    setLoadingPage(true)
     moviePopuler().then(result =>{
       result.map( async(value,index) =>{
         if(index < 3) {
@@ -38,6 +45,13 @@ function App() {
           setHeroMovie(ind => [...ind, movie])
         }
       })
+    })
+    .catch(err =>{
+      setMessageError(err.message)
+      setErrorHandle(true)
+    })
+    .finally(() =>{
+      setLoadingPage(false)
     })
   },[])
 
@@ -55,8 +69,15 @@ function App() {
 
   useEffect(() =>{
     if(idMovieMobile != ''){
+      setLoadingMobile(true)
       MovieDetail(idMovieMobile).then(result =>{
         setMovieDetail(result)
+      })
+      .catch(err =>{
+        console.log(err)
+      })
+      .finally(() =>{
+        setLoadingMobile(false)
       })
     }
   },[idMovieMobile])
@@ -64,13 +85,37 @@ function App() {
   window.onscroll =() =>{
     if(window.pageYOffset > 10 ){
       setNavScrol('wrapNavbar backdrop-blur bg-black/30 border-b')
+      if(mobileShowDetail){
+        const buttonMovie = document.querySelectorAll('.buttonMovie')
+        buttonMovie.forEach((value)=>{
+            value.classList.remove('flex')
+            value.classList.add('hidden')
+        })
+        setMobileShowDetail(false)
+      }
     }else{
       setNavScrol('wrapNavbar')
     }
   }
 
+  
   return (
     <div>
+      {loadingPage ? 
+      <>
+      <div className={navScrol}>
+        <LoadingNav />
+      </div>
+        <LoadingHero />
+        <LoadingMovieList weekDay={true}/>
+        <LoadingMovieList weekDay={false}/>
+        <Footer />
+      </>
+      :
+      <>
+      {errorHandle ? <h1 className='text-white'>{messageError}</h1> 
+      : 
+      <>
       <div className={navScrol}>
         <Navigation login={setLogin} sign={setSignIn} showSearchMovie={setShowSearchMovie} userSetting={setUserSetting} userLogin={user} dataUser={data} userIsLogin={setUser} movieSearch={setListSearchMovie} error={setErrorHandle} errorMesangge={setMessageError} loading={setLoading}/>
       </div>
@@ -95,18 +140,31 @@ function App() {
         </div>
         :
         <>
-        <Hero movie={heroMovie} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile}/>
-        <MovieList menu={setTranding} listMovie={trandingMovie} title={'TRANDING'} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile} id={'Tranding'} />
+        <div className='min-h-[18rem] md:min-h-[34rem] lg:min-h-screen'>
+          <Hero movie={heroMovie} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile}/>
+        </div>
+        <MovieList menu={setTranding} listMovie={trandingMovie} title={'TRENDING'} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile} id={'Tranding'} />
         <MovieList listMovie={populerMovie} title={'ALL MOVIE'} mobileShow={setMobileShowDetail} idMobile={setIdMovieMobile} id={'All_Movie'}/>
         
         <Footer />
         </>
+      }
+        </>
         }
       </>
       }
-
-      {mobileShowDetail && <MobileMovieDetail closeMobileDetail={setMobileShowDetail} mobileDetail={movieDetail}/>}
-    </div>
+      {mobileShowDetail && 
+        <>
+        {loadingMobile ? 
+            <MobileLoadDetail closeMobileDetail={setMobileShowDetail}/>
+            :
+            <MobileMovieDetail closeMobileDetail={setMobileShowDetail} mobileDetail={movieDetail}/>
+        }
+        </>
+      }
+      </>
+    }
+      </div>
   )
 }
 

@@ -37,7 +37,7 @@ export const ImageActor = async (idActor) =>{
 
 export const Genre = async() => {
     const genre = await axios.get(
-        `${import.meta.env.VITE_BASEURL}//genre/movie/list?api_key=${import.meta.env.VITE_APIKEY}`
+        `${import.meta.env.VITE_BASEURL}/genre/movie/list?api_key=${import.meta.env.VITE_APIKEY}`
     )
     return genre.data.genres
 }

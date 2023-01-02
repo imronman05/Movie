@@ -4,6 +4,7 @@ import { BiShowAlt } from 'react-icons/bi';
 import { AiOutlineCamera } from 'react-icons/ai';
 import { GrFormViewHide } from 'react-icons/gr';
 import picDefault from './../../assets/picDefault.png'
+import { useEffect } from 'react';
 
 const SettingUser = (props) => {
     const newData = {
@@ -19,6 +20,7 @@ const SettingUser = (props) => {
     const img = useRef()
     const editData = JSON.parse(localStorage.getItem('user'))
     const [pict,setPick] = useState(editData.gambar);
+    const [image,setImage] = useState('')
     const [valueUsername, setValueUsername] = useState(editData.userName)
     const [valueEmail, setValueEmail] = useState(editData.email)
     const [valuePassword, setValuePassword] = useState(editData.password)
@@ -35,9 +37,14 @@ const SettingUser = (props) => {
         setPasswordShow(false)
     }
 
+
     const imageChange = (event) =>{
-        let pic = URL.createObjectURL(event.target.files[0])
-        setPick(pic)
+        const reader = new FileReader()
+
+        reader.onload  = () =>{
+            setPick(reader.result)
+        }
+        reader.readAsDataURL(event.target.files[0])
     }
 
     const handleSubmit = (event) =>{
@@ -76,7 +83,7 @@ const SettingUser = (props) => {
                         <AiOutlineCamera color={'white'} width='20px' height='20px' />
                     </div>
                 </div>
-                <input ref={img} type="file" id='gambar' name='gambar' hidden accept='image/*' onChange={imageChange} />
+                <input ref={img} type="file" id='gambar' name='gambar' hidden accept='image/*' onChange={imageChange}/>
             </div>
             <div className='text-xl relative'>
                 <input type="name" placeholder=' ' name='userName' className='bg-transparent border-b border-slate-600 text-slate-800 w-full focus:outline-none peer sign' defaultValue={valueUsername} onChange={(e) => setValueUsername(e.target.value)} id='name' required/>
