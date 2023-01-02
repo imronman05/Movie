@@ -35,6 +35,8 @@ function App() {
   const [loading,setLoading] = useState(false)
   const [loadingPage,setLoadingPage] = useState(true)
   const [loadingMobile, setLoadingMobile] = useState(false)
+  const [errorPage,setErrorPage] = useState(false)
+  const [MessageErorPage, setMessageErorPage] = useState('')
 
   useEffect(() =>{
     setLoadingPage(true)
@@ -47,8 +49,8 @@ function App() {
       })
     })
     .catch(err =>{
-      setMessageError(err.message)
-      setErrorHandle(true)
+      setMessageErorPage(err.message)
+      setErrorPage(true)
     })
     .finally(() =>{
       setLoadingPage(false)
@@ -113,7 +115,7 @@ function App() {
       </>
       :
       <>
-      {errorHandle ? <h1 className='text-white'>{messageError}</h1> 
+      {errorPage ? <h1 className='text-white'>{MessageErorPage}</h1> 
       : 
       <>
       <div className={navScrol}>
