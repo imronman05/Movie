@@ -115,7 +115,10 @@ function App() {
       </>
       :
       <>
-      {errorPage ? <h1 className='text-white'>{MessageErorPage}</h1> 
+      {errorPage ? 
+        <div className='flex items-center h-screen justify-center text-white text-xl md:text-3xl'>
+          <h1>{MessageErorPage}</h1> 
+        </div>
       : 
       <>
       <div className={navScrol}>

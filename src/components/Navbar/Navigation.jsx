@@ -11,12 +11,14 @@ const Navigation = (props) => {
     const [classMenu, setClassMenu] = useState('menuMobile -left-full');
     const [searchMovie,setSearchMovie] = useState('')
     const userLogin = JSON.parse(localStorage.getItem('login'))
+    const [menuUser, setMenuUser] = useState(false)
 
     const updateMenu = () =>{
         if(!hamburgerMenu){
             setClassMenu('menuMobile -left-0')
         }else{
             setClassMenu('menuMobile -left-full')
+            setMenuUser(false)
         }
     setHamburgerMenu(!hamburgerMenu)
     }
@@ -90,7 +92,7 @@ const Navigation = (props) => {
                     <input type="text" className='bg-transparent border-b text-white w-full focus:outline-none px-2' value={searchMovie} onChange={(event) => setSearchMovie(event.target.value)}/>
                     <button className='text-xl text-white'><BsSearch /></button>
                     </form>
-                {userLogin ? <UserLogin userSetting={props.userSetting} dataUser={props.dataUser} logout={props.userIsLogin}/>  :
+                {userLogin ? <UserLogin userSetting={props.userSetting} dataUser={props.dataUser} logout={props.userIsLogin} menuUser={menuUser} setMenuUser={setMenuUser}/>  :
                 <>
                     <button className="btn bg-[#E50914]" onClick={() => props.login(true)}>Login</button>
                     <button className="btn bg-[#E50914]" onClick={() => props.sign(true)} >Sign in</button>
