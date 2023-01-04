@@ -12,6 +12,7 @@ const Login = (props) => {
   })
   const [usernameInfo, setUsernameInfo] = useState('text-sm text-pink-600 font-semibold invisible')
   const [passwordInfo, setpasswordInfo] = useState('text-sm text-pink-600 font-semibold invisible')
+  const [akunNull,setAkunNull] = useState(false)
   const [passwordShow, setPasswordShow] = useState(false)
   const [password,setPassword] = useState('password')
   const btnRef = useRef()
@@ -49,7 +50,9 @@ const Login = (props) => {
   const handleSubmit = (event) =>{
     event.preventDefault()
     const data = JSON.parse(localStorage.getItem('user'))
-    if(data.userName != login.name && data.password != login.password){
+    if(data == null){
+      setAkunNull(true)
+    }else if(data.userName != login.name && data.password != login.password){
       setUsernameInfo('text-sm text-pink-600 font-semibold')
       setpasswordInfo('text-sm text-pink-600 font-semibold')
     }else if(data.userName != login.name && data.password == login.password){
@@ -86,6 +89,12 @@ const Login = (props) => {
         <AiOutlineCloseCircle className='absolute top-0 right-0 text-slate-800 text-3xl cursor-pointer' onClick={close} />
         <form action="" className='bg-white px-4 py-5 flex flex-col gap-5 rounded-md ' onSubmit={handleSubmit}>
           <h1 className='text-center text-3xl font-semibold text-slate-800'>Login</h1>
+          {akunNull &&
+            <div className='bg-green-300 text-black py-1 px-2 text-lg flex items-center justify-between'>
+              <h1>Akun Tidak Ditemukan</h1>
+              <AiOutlineCloseCircle className='text-2xl cursor-pointer' onClick={() => setAkunNull(false)}/>
+            </div> 
+            }
           <div className='text-xl relative'>
             <input type="name" placeholder=' ' name='name' className='bg-transparent border-b border-slate-600 text-slate-800 w-full focus:outline-none peer login' required onChange={handleChange}/>
             <label htmlFor='email' className='absolute -top-5 -left-2 transition-all scale-75 duration  peer-placeholder-shown:scale-100 peer-placeholder-shown:-top-0 peer-placeholder-shown:-left-0'>Username</label>
